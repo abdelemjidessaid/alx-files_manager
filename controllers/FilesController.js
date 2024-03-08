@@ -26,17 +26,17 @@ class FilesController {
 
     if (!user) return response.status(401).send({ error: 'Unauthorized' });
 
-    const { error: validationError, fileParams } = await fileUtils.validateBody(
-      request
-    );
+    const {
+      error: validationError, fileParams,
+    } = await fileUtils.validateBody(request);
 
     if (validationError) {
       return response.status(400).send({ error: validationError });
     }
 
     if (
-      fileParams.parentId !== 0 &&
-      !basicUtils.isValidId(fileParams.parentId)
+      fileParams.parentId !== 0
+      && !basicUtils.isValidId(fileParams.parentId)
     ) {
       return response.status(400).send({ error: 'Parent not found' });
     }
@@ -44,7 +44,7 @@ class FilesController {
     const { error, code, newFile } = await fileUtils.saveFile(
       userId,
       fileParams,
-      FOLDER_PATH
+      FOLDER_PATH,
     );
 
     if (error) {
@@ -144,7 +144,7 @@ class FilesController {
   static async putPublish(request, response) {
     const { error, code, updatedFile } = await fileUtils.publishUnpublish(
       request,
-      true
+      true,
     );
 
     if (error) return response.status(code).send({ error });
@@ -155,7 +155,7 @@ class FilesController {
   static async putUnpublish(request, response) {
     const { error, code, updatedFile } = await fileUtils.publishUnpublish(
       request,
-      false
+      false,
     );
 
     if (error) return response.status(code).send({ error });
