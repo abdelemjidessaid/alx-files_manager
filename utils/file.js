@@ -7,7 +7,12 @@ import basicUtils from './basic';
 
 const fileUtils = {
   async validateBody(request) {
-    const { name, type, isPublic = false, data } = request.body;
+    const {
+      name,
+      type,
+      isPublic = false,
+      data,
+    } = request.body;
 
     let { parentId = 0 } = request.body;
 
@@ -65,7 +70,12 @@ const fileUtils = {
   },
 
   async saveFile(userId, fileParams, FOLDER_PATH) {
-    const { name, type, isPublic, data } = fileParams;
+    const {
+      name,
+      type,
+      isPublic,
+      data,
+    } = fileParams;
     let { parentId } = fileParams;
 
     if (parentId !== 0) parentId = ObjectId(parentId);
@@ -104,7 +114,7 @@ const fileUtils = {
     const fileList = await dbClient.filesCollection.findOneAndUpdate(
       query,
       set,
-      { returnOriginal: false }
+      { returnOriginal: false },
     );
     return fileList;
   },
@@ -140,7 +150,7 @@ const fileUtils = {
         _id: ObjectId(fileId),
         userId: ObjectId(userId),
       },
-      { $set: { isPublic: setPublish } }
+      { $set: { isPublic: setPublish } },
     );
 
     const {
@@ -175,8 +185,8 @@ const fileUtils = {
 
   isOwnerAndPublic(file, userId) {
     if (
-      (!file.isPublic && !userId) ||
-      (userId && file.userId.toString() !== userId && !file.isPublic)
+      (!file.isPublic && !userId)
+      || (userId && file.userId.toString() !== userId && !file.isPublic)
     ) {
       return false;
     }
